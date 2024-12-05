@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Demo</title>
+</head>
+<body>
+  <h1>WebSocket Demo</h1>
+  <p><strong>Server Time:</strong> <span id="server-time">Loading...</span></p>
+  <p><strong>Active Connections:</strong> <span id="connections">Loading...</span></p>
+
+  <script>
+    // tạo connection tới server
+    const socket = new WebSocket('ws://localhost:3002');
+
+    // xử lý nhận dữ liệu từ server
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      // Update the UI with the server data
+      document.getElementById('server-time').textContent = data.time;
+      document.getElementById('connections').textContent = data.connections;
+    };
+
+    // xử lý lỗi xảy ra
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    // xử lý đóng kết nối
+    socket.onclose = () => {
+      console.log('WebSocket connection closed.');
+    };
+  </script>
+</body>
+</html>
